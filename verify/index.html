@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification d'Attestation — Allthinkers x Geny's World</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0F766E',
+                            tealLight: '#CCFBF1',
+                            coral: '#E11D48',
+                            coralLight: '#FFE4E6',
+                            gold: '#D4AF37',
+                            goldDark: '#AA7C11',
+                            slateDark: '#1E293B',
+                            bgIvory: '#FDFBF7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        cursive: ['Alex Brush', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-stone-100 font-sans flex flex-col">
+
+    <!-- Barre supérieure de marque -->
+    <header class="bg-white border-b border-stone-200 shadow-sm">
+        <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-brand-teal flex items-center justify-center text-white shadow-sm">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div class="text-center">
+                <p class="text-[10px] font-bold tracking-[0.25em] uppercase">
+                    <span class="text-brand-coral">ALLTHINKERS</span>
+                    <span class="text-stone-400 font-medium normal-case tracking-normal italic"> en collaboration avec </span>
+                    <span class="text-brand-teal">GENY'S WORLD</span>
+                </p>
+                <p class="text-[9px] text-stone-400 uppercase tracking-widest">Portail officiel de vérification des attestations</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-3xl mx-auto px-4 py-10">
+
+        <!-- ===== ÉTAT : CHARGEMENT ===== -->
+        <div id="stateLoading" class="hidden bg-white rounded-2xl shadow-md border border-stone-200 p-12 text-center">
+            <i class="fa-solid fa-circle-notch fa-spin text-4xl text-brand-teal mb-4"></i>
+            <p class="text-stone-500 text-sm font-semibold">Vérification du certificat en cours…</p>
+        </div>
+
+        <!-- ===== ÉTAT : CERTIFICAT AUTHENTIQUE ===== -->
+        <div id="stateValid" class="hidden">
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <!-- Bandeau de statut -->
+                <div class="bg-brand-teal px-6 py-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-circle-check text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-bold text-lg leading-tight">Certificat Authentique</h1>
+                        <p class="text-brand-tealLight text-xs">Ce certificat figure dans le registre officiel d'Allthinkers x Geny's World.</p>
+                    </div>
+                    <!-- Sceau doré -->
+                    <div class="ml-auto hidden sm:flex w-14 h-14 rounded-full bg-gradient-to-br from-amber-300 via-brand-gold to-brand-goldDark items-center justify-center border-4 border-white shadow-lg flex-shrink-0">
+                        <div class="text-center text-white">
+                            <i class="fa-solid fa-shield-halved text-lg drop-shadow-md"></i>
+                            <p class="text-[5px] font-bold tracking-widest">VALIDÉ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Détails du certificat -->
+                <div class="p-6 sm:p-8">
+                    <p class="font-serif italic text-stone-500 text-sm text-center mb-1">Cette attestation a été décernée à</p>
+                    <h2 id="vName" class="font-cursive text-4xl text-brand-coral text-center my-3"></h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-xs">
+                        <div class="bg-stone-50 rounded-xl border border-stone-200 p-4">
+                            <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-1"><i class="fa-solid fa-fingerprint mr-1"></i> Identifiant du certificat</p>
+                            <p id="vId" class="font-mono font-bold text-brand-teal text-sm"></p>
+                        </div>
+                        <div class="bg-stone-50 rounded-xl border border-stone-200 p-4">
+                            <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-1"><i class="fa-solid fa-calendar-day mr-1"></i> Date de remise</p>
+                            <p id="vDate" class="font-semibold text-brand-slateDark"></p>
+                        </div>
+                        <div class="bg-stone-50 rounded-xl border border-stone-200 p-4 sm:col-span-2">
+                            <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-1"><i class="fa-solid fa-graduation-cap mr-1"></i> Programme de formation</p>
+                            <p id="vProgram" class="font-semibold text-brand-slateDark leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <!-- Modules validés -->
+                    <div class="mt-4">
+                        <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-2"><i class="fa-solid fa-list-check mr-1"></i> Modules validés</p>
+                        <div id="vModules" class="flex flex-wrap gap-2"></div>
+                    </div>
+
+                    <!-- Signataires -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 text-xs border-t border-stone-100 pt-5">
+                        <div>
+                            <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-1">Directrice</p>
+                            <p id="vDirector" class="font-semibold text-brand-slateDark"></p>
+                        </div>
+                        <div class="sm:text-right">
+                            <p class="font-bold text-[9px] text-stone-400 uppercase tracking-widest mb-1">Formateur</p>
+                            <p id="vTrainer" class="font-semibold text-brand-slateDark"></p>
+                            <p id="vTrainerTitle" class="text-[10px] text-stone-500 italic"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ÉTAT : CERTIFICAT NON RECONNU ===== -->
+        <div id="stateInvalid" class="hidden">
+            <div class="bg-white rounded-2xl shadow-md border border-stone-200 overflow-hidden">
+                <div class="bg-brand-coral px-6 py-5 flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-bold text-lg leading-tight">Certificat Non Reconnu</h1>
+                        <p class="text-brand-coralLight text-xs">Aucun certificat correspondant à cet identifiant n'a été trouvé dans le registre officiel.</p>
+                    </div>
+                </div>
+                <div class="p-6 sm:p-8 text-center">
+                    <p class="text-xs text-stone-500 mb-2">Identifiant recherché :</p>
+                    <p id="iId" class="font-mono font-bold text-brand-coral text-lg bg-brand-coralLight inline-block px-4 py-1.5 rounded-lg border border-brand-coral/20"></p>
+                    <div class="max-w-md mx-auto mt-6 text-left bg-stone-50 border border-stone-200 rounded-xl p-5">
+                        <p class="text-xs font-bold text-brand-slateDark mb-2"><i class="fa-solid fa-circle-info text-brand-teal mr-1"></i> Que signifie ce résultat ?</p>
+                        <ul class="text-[11px] text-stone-500 space-y-1.5 list-disc list-inside">
+                            <li>L'identifiant a peut-être été mal saisi (vérifiez les lettres et chiffres).</li>
+                            <li>Le certificat n'a pas encore été enregistré dans le registre.</li>
+                            <li>Le document présenté peut ne pas être authentique.</li>
+                        </ul>
+                        <p class="text-[11px] text-stone-500 mt-3">En cas de doute, contactez <span class="font-bold text-brand-teal">Allthinkers</span> avec une copie du document.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ÉTAT : ERREUR TECHNIQUE ===== -->
+        <div id="stateError" class="hidden bg-white rounded-2xl shadow-md border border-stone-200 p-10 text-center">
+            <i class="fa-solid fa-cloud-bolt text-4xl text-stone-300 mb-4"></i>
+            <h1 class="font-bold text-brand-slateDark mb-2">Vérification momentanément indisponible</h1>
+            <p class="text-xs text-stone-500 max-w-md mx-auto">Le registre des certificats n'a pas pu être chargé. Vérifiez votre connexion internet puis réessayez.</p>
+            <button onclick="location.reload()" class="mt-5 px-5 py-2.5 bg-brand-teal hover:bg-teal-800 text-white font-semibold text-xs rounded-xl shadow-md transition-all">
+                <i class="fa-solid fa-rotate-right mr-1"></i> Réessayer
+            </button>
+        </div>
+
+        <!-- ===== FORMULAIRE DE RECHERCHE MANUELLE ===== -->
+        <div class="bg-white rounded-2xl shadow-md border border-stone-200 p-6 mt-8">
+            <p class="text-xs font-bold text-brand-slateDark mb-3 text-center uppercase tracking-widest">
+                <i class="fa-solid fa-magnifying-glass text-brand-teal mr-1"></i> Vérifier un autre certificat
+            </p>
+            <form id="manualForm" class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="text" id="manualId" placeholder="Ex : AT-2026-9481"
+                    class="flex-1 px-4 py-2.5 border border-stone-300 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-teal uppercase placeholder:normal-case placeholder:font-sans">
+                <button type="submit" class="px-6 py-2.5 bg-brand-teal hover:bg-teal-800 text-white font-semibold text-xs rounded-xl shadow-md transition-all whitespace-nowrap">
+                    Vérifier l'authenticité
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-stone-200 py-4">
+        <p class="text-center text-[10px] text-stone-400 uppercase tracking-widest">
+            © Allthinkers x Geny's World — Registre officiel des attestations
+        </p>
+    </footer>
+
+    <script>
+        // ===================================================================
+        // CONFIGURATION
+        // Chemin vers le registre des certificats (relatif à /verify/)
+        // ===================================================================
+        const REGISTRY_URL = '../certificates.json';
+
+        const $ = (id) => document.getElementById(id);
+
+        function showState(name) {
+            ['stateLoading', 'stateValid', 'stateInvalid', 'stateError'].forEach(s => {
+                $(s).classList.toggle('hidden', s !== name);
+            });
+        }
+
+        function renderValid(id, cert) {
+            $('vName').textContent = cert.name;
+            $('vId').textContent = id;
+            $('vDate').textContent = cert.date;
+            $('vProgram').textContent = cert.program;
+            $('vDirector').textContent = cert.director;
+            $('vTrainer').textContent = cert.trainer;
+            $('vTrainerTitle').textContent = cert.trainerTitle || '';
+            $('vModules').innerHTML = (cert.modules || []).map(m =>
+                `<span class="text-[10px] font-bold text-brand-teal bg-brand-tealLight border border-brand-teal/20 px-3 py-1 rounded-full">
+                    <i class="fa-solid fa-circle-check mr-1"></i>${m}
+                </span>`
+            ).join('');
+            showState('stateValid');
+        }
+
+        function renderInvalid(id) {
+            $('iId').textContent = id;
+            showState('stateInvalid');
+        }
+
+        async function verifyCertificate(rawId) {
+            const id = (rawId || '').trim().toUpperCase();
+            if (!id) { showState('stateInvalid'); $('iId').textContent = '(aucun identifiant)'; return; }
+
+            showState('stateLoading');
+            try {
+                const response = await fetch(REGISTRY_URL, { cache: 'no-store' });
+                if (!response.ok) throw new Error('Registre inaccessible');
+                const registry = await response.json();
+                const cert = registry[id];
+                if (cert && cert.status === 'valid') {
+                    renderValid(id, cert);
+                } else {
+                    renderInvalid(id);
+                }
+            } catch (err) {
+                console.error('Erreur de vérification :', err);
+                showState('stateError');
+            }
+        }
+
+        // Recherche manuelle
+        $('manualForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = $('manualId').value.trim();
+            if (!id) return;
+            // Met à jour l'URL sans recharger la page, puis lance la vérification
+            const url = new URL(window.location.href);
+            url.searchParams.set('id', id);
+            window.history.pushState({}, '', url);
+            verifyCertificate(id);
+        });
+
+        // Point d'entrée : lit ?id= dans l'URL (provenant du QR Code)
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) {
+                $('manualId').value = id;
+                verifyCertificate(id);
+            } else {
+                // Aucun ID : on affiche simplement le formulaire de recherche
+                showState('none');
+                $('manualId').focus();
+            }
+        });
+    </script>
+</body>
+</html>
