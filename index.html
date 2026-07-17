@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification des Attestations — Allthinkers x Geny's World</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0F766E',
+                            tealLight: '#CCFBF1',
+                            coral: '#E11D48',
+                            gold: '#D4AF37',
+                            slateDark: '#1E293B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-stone-100 font-sans flex flex-col items-center justify-center px-4 py-10">
+
+    <div class="w-full max-w-lg">
+        <!-- En-tête de marque -->
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-brand-teal flex items-center justify-center text-white text-2xl shadow-lg mx-auto mb-4">
+                <i class="fa-solid fa-award"></i>
+            </div>
+            <p class="text-[10px] font-bold tracking-[0.25em] uppercase mb-2">
+                <span class="text-brand-coral">ALLTHINKERS</span>
+                <span class="text-stone-400 font-medium normal-case tracking-normal italic"> x </span>
+                <span class="text-brand-teal">GENY'S WORLD</span>
+            </p>
+            <h1 class="font-serif text-3xl font-semibold text-brand-slateDark">Vérification d'Attestation</h1>
+            <div class="w-20 h-0.5 bg-gradient-to-r from-brand-teal via-brand-coral to-brand-teal mx-auto mt-3"></div>
+            <p class="text-xs text-stone-500 mt-3 max-w-sm mx-auto leading-relaxed">
+                Saisissez l'identifiant unique figurant au bas du certificat (ex : <span class="font-mono font-bold text-brand-teal">AT-2026-9481</span>) pour confirmer son authenticité.
+            </p>
+        </div>
+
+        <!-- Formulaire -->
+        <div class="bg-white rounded-2xl shadow-md border border-stone-200 p-6">
+            <form id="searchForm" class="flex flex-col gap-3">
+                <input type="text" id="searchId" placeholder="Identifiant du certificat…" autofocus
+                    class="w-full px-4 py-3 border border-stone-300 rounded-xl text-sm font-mono uppercase placeholder:normal-case placeholder:font-sans focus:outline-none focus:ring-2 focus:ring-brand-teal">
+                <button type="submit" class="w-full px-6 py-3 bg-brand-teal hover:bg-teal-800 text-white font-semibold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Vérifier l'authenticité
+                </button>
+            </form>
+            <p class="text-[10px] text-stone-400 text-center mt-4">
+                <i class="fa-solid fa-qrcode mr-1"></i> Vous pouvez aussi scanner le QR Code imprimé sur le certificat.
+            </p>
+        </div>
+
+        <p class="text-center text-[10px] text-stone-400 uppercase tracking-widest mt-8">
+            © Allthinkers x Geny's World — Registre officiel
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('searchId').value.trim();
+            if (!id) return;
+            window.location.href = 'verify/?id=' + encodeURIComponent(id);
+        });
+
+        // Si un ?id= est passé directement à la racine, on redirige vers /verify/
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('id')) {
+            window.location.replace('verify/?id=' + encodeURIComponent(params.get('id')));
+        }
+    </script>
+</body>
+</html>
