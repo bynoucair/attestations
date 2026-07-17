@@ -82,6 +82,20 @@
     "director": "Madame Nihad El Idrissi, Directrice de l'école",
     "trainer": "Monsieur Noucair B",
     "trainerTitle": "Consultant en Innovation Technologique & Sociale | Allthinkers CEO"
+  },
+   "AT-2026-9487": {
+    "status": "valid",
+    "name": "Madame Saphia",
+    "date": "Le 17 Juillet 2026",
+    "program": "Accompagnement aux outils numériques professionnels — appropriation du système d'exploitation, organisation documentaire sous Microsoft Word, fonctions fondamentales d'Excel et conception visuelle avec Canva.",
+    "modules": [
+      "Module 0 : Kit de Survie",
+      "Session 1.1 : Word & Excel",
+      "Session 1.3 : Canva & Retouche IA"
+    ],
+    "director": "Madame Nihad El Idrissi, Directrice de l'école",
+    "trainer": "Monsieur Noucair B",
+    "trainerTitle": "Consultant en Innovation Technologique & Sociale | Allthinkers CEO"
   }
   
 }
